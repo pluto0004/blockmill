@@ -1,18 +1,6 @@
 import { Navbar } from "components/Navbar";
 import { Header } from "components/Header";
 import { Footer } from "components/Footer";
-import { EmojiContainer } from "components/EmojiContainer";
-import { EMOJIS } from "constants/emoji";
-// Import Swiper React components
-import { Swiper, SwiperSlide } from "swiper/react";
-
-// Import Swiper styles
-import "swiper/css";
-
-// import required modules
-import { Autoplay } from "swiper";
-
-import { useWindowSize } from "hooks/useWindowSize";
 
 const Home = () => {
   return (
