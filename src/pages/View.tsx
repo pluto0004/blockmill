@@ -10,7 +10,7 @@ const View = () => {
     console.log("View clicked");
   };
   return (
-    <>
+    <div id='view'>
       <Header />
       <Navbar />
       <section className='min-h-screen'>
@@ -37,7 +37,7 @@ const View = () => {
           <Table />
         </div>
       </section>
-    </>
+    </div>
   );
 };
 

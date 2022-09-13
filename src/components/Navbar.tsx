@@ -10,7 +10,7 @@ export const Navbar = () => {
   return (
     <div>
       <nav className='px-2 sm:px-4'>
-        <div className='flex justify-center'>
+        <div className='flex flex-col items-center justify-center md:flex-row'>
           <MenuButton color={grassButton} text='HOME' path='/' />
           <MenuButton color={skyButton} text='ABOUT' path='/about' />
           <MenuButton color={pinkButton} text='VIEW' path='/view' />
