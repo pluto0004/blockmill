@@ -8,7 +8,7 @@ import "./index.css";
 
 const Home = lazy(() => import("pages/Home"));
 const ABOUT = lazy(() => import("pages/About"));
-const VIEW = lazy(() => import("pages/View"));
+const VIEW = lazy(() => import("pages/View/View"));
 const DONATE = lazy(() => import("pages/Donate"));
 const NotFound = lazy(() => import("pages/NotFound"));
 

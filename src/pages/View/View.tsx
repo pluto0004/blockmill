@@ -4,11 +4,14 @@ import { Table } from "components/Table";
 import { Header } from "components/Header";
 import { purpleButton } from "utils/buttons";
 import { Link as Scroll } from "react-scroll";
+import useHandleAction from "./hooks";
 
 const View = () => {
+  const { chain, isLoading, transactions } = useHandleAction();
   const tempAction = () => {
     console.log("View clicked");
   };
+
   return (
     <div id='view'>
       <Header />
@@ -34,6 +37,7 @@ const View = () => {
       </section>
       <section id='transaction' className='min-h-screen bg-gray-800'>
         <div className='flex items-center justify-center pt-44'>
+          {chain}
           <Table />
         </div>
       </section>
