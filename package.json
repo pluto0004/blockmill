@@ -11,6 +11,9 @@
   "dependencies": {
     "@rainbow-me/rainbowkit": "^0.5.0",
     "@tanstack/react-table": "^8.5.13",
+    "alchemy-sdk": "^2.0.4",
+    "axios": "^0.27.2",
+    "bignumber.js": "^9.1.0",
     "ethers": "^5.7.0",
     "framer-motion": "^7.2.1",
     "react": "^18.2.0",

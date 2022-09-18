@@ -4,11 +4,23 @@ import { Table } from "components/Table";
 import { Header } from "components/Header";
 import { purpleButton } from "utils/buttons";
 import { Link as Scroll } from "react-scroll";
+import useHandleAction from "./hooks";
+import { useEffect } from "react";
 
 const View = () => {
-  const tempAction = () => {
-    console.log("View clicked");
-  };
+  const {
+    isLoading,
+    transactions,
+    totalValue,
+    fetchData,
+    updateAddress,
+    updateTotal,
+  } = useHandleAction();
+
+  useEffect(() => {
+    updateTotal(transactions);
+  }, [transactions]);
+
   return (
     <div id='view'>
       <Header />
@@ -22,20 +34,24 @@ const View = () => {
             type='text'
             className=' mb-28 h-20 w-80 overflow-hidden text-ellipsis border-b-2 border-transparent border-b-white bg-transparent px-4 text-2xl focus:border-white focus:ring-0 md:w-96'
             placeholder='Wallet Address'
-          ></input>
+            onChange={(e) => updateAddress(e.currentTarget.value)}
+          />
           <Scroll to='transaction' smooth={true}>
             <Button
               text='View'
               color={purpleButton}
-              onClickAction={tempAction}
+              onClickAction={fetchData}
             ></Button>
           </Scroll>
         </div>
       </section>
       <section id='transaction' className='min-h-screen bg-gray-800'>
         <div className='flex items-center justify-center pt-44'>
-          <Table />
+          <Table transactions={transactions} isLoading={isLoading} />
         </div>
+        <p className='ml-20 text-3xl text-pink'>
+          Total Spent Ether: {totalValue}
+        </p>
       </section>
     </div>
   );
