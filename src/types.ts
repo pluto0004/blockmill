@@ -5,8 +5,7 @@ export interface Color {
 }
 
 export interface Transaction {
-  date: string;
+  dateTime: string;
   value: string;
-  transactionFee: string;
   url: string;
 }

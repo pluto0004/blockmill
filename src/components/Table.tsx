@@ -1,59 +1,51 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
+  useReactTable,
+  getCoreRowModel,
   createColumnHelper,
   flexRender,
-  getCoreRowModel,
-  useReactTable,
 } from "@tanstack/react-table";
+import { Transaction } from "types";
+import { LoadingSpinner } from "./Spinner";
 
-type Transaction = {
-  date: string;
-  value: string;
-  transactionFees: string;
-  url: string;
-};
+interface Props {
+  transactions: Transaction[];
+  isLoading: boolean;
+}
 
-const defaultData: Transaction[] = [
-  {
-    date: "2 days 5 hrs ago	",
-    value: "0.012",
-    transactionFees: "0.000143084672367 ",
-    url: "View More",
-  },
-  {
-    date: "2 days 5 hrs ago	",
-    value: "0.012",
-    transactionFees: "0.000143084672367 ",
-    url: "View More",
-  },
-  {
-    date: "2 days 5 hrs ago	",
-    value: "0.012",
-    transactionFees: "0.000143084672367 ",
-    url: "View More",
-  },
-];
+export const Table = ({ transactions, isLoading }: Props) => {
+  const columnHelper = createColumnHelper<Transaction>();
 
-const columnHelper = createColumnHelper<Transaction>();
+  const columns = [
+    columnHelper.accessor("dateTime", {
+      cell: (info) => info.getValue(),
+      footer: (info) => info.column.id,
+    }),
+    columnHelper.accessor("value", {
+      header: () => "Value",
+      cell: (info) => info.renderValue(),
+      footer: (info) => info.column.id,
+    }),
+    columnHelper.accessor("url", {
+      header: () => <p className='px-5'>Block Explore</p>,
+      cell: (info) => (
+        <a
+          target='_blank'
+          className='text-blue-400'
+          href={`${info.getValue()}`}
+        >
+          View More
+        </a>
+      ),
+      footer: (info) => info.column.id,
+    }),
+  ];
 
-const columns = [
-  columnHelper.accessor("date", {
-    cell: (info) => info.getValue(),
-  }),
-  columnHelper.accessor("value", {
-    cell: (info) => info.renderValue(),
-  }),
-  columnHelper.accessor("transactionFees", {
-    cell: (info) => info.renderValue(),
-  }),
-  columnHelper.accessor("url", {
-    cell: (info) => info.renderValue(),
-  }),
-];
+  const [data, setData] = React.useState(() => [...transactions]);
 
-export const Table = () => {
-  const [data] = React.useState(() => [...defaultData]);
-  const rerender = React.useReducer(() => ({}), {})[1];
+  useEffect(() => {
+    setData([...transactions]);
+  }, [transactions]);
 
   const table = useReactTable({
     data,
@@ -62,56 +54,58 @@ export const Table = () => {
   });
 
   return (
-    <div className='p-2'>
-      <table className='w-[600px] text-center'>
-        <thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-        <tfoot>
-          {table.getFooterGroups().map((footerGroup) => (
-            <tr key={footerGroup.id}>
-              {footerGroup.headers.map((header) => (
-                <th key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.footer,
-                        header.getContext()
-                      )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </tfoot>
-      </table>
-      <div className='h-4' />
-      <button onClick={() => rerender()} className='border p-2'>
-        Refresh
-      </button>
-    </div>
+    <>
+      {!isLoading && transactions.length === 0 ? (
+        <h1 className='text-center text-3xl font-bold text-sky'>No Data</h1>
+      ) : (
+        <div className='w-full'>
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : (
+            <>
+              <p className='ml-20 mb-10 text-2xl'>
+                Currently only show the latest 15 transactions
+              </p>
+
+              <table className='ml-20 w-1/2 border-separate border-spacing-x-5 border-spacing-y-2 border border-slate-500'>
+                <thead>
+                  {table.getHeaderGroups().map((headerGroup) => (
+                    <tr key={headerGroup.id}>
+                      {headerGroup.headers.map((header) => (
+                        <th className='border border-slate-600' key={header.id}>
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                        </th>
+                      ))}
+                    </tr>
+                  ))}
+                </thead>
+                <tbody>
+                  {table.getRowModel().rows.map((row) => (
+                    <tr key={row.id}>
+                      {row.getVisibleCells().map((cell) => (
+                        <td
+                          className='border border-slate-700 p-2'
+                          key={cell.id}
+                        >
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </>
+          )}
+        </div>
+      )}
+    </>
   );
 };

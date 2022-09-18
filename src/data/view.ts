@@ -1,54 +1,70 @@
 import { CHAIN } from "constants/chains";
 import { BaseError } from "errors/errors";
 import { Transaction } from "types";
-import axios from "axios";
 import {
-  ETHEREUM_URL,
-  POLYGON_URL,
-  ARBITRUM_URL,
-  OPTIMISM_URL,
-} from "constants/apis";
+  Alchemy,
+  AssetTransfersCategory,
+  AssetTransfersOrder,
+  AssetTransfersResult,
+  Network,
+} from "alchemy-sdk";
+import { ETHEREUM_SCAN } from "constants/blockexplore";
+import BigNumber from "bignumber.js";
 
 export const fetchTransactions = async (
-  chain: CHAIN
-): Promise<Transaction[] | undefined> => {
+  chain: CHAIN,
+  fromAddress: string
+): Promise<Transaction[] | []> => {
   if (!chain) {
     throw new BaseError("No Chain is provided");
   }
 
-  const key = import.meta.env.VITE_ALCHEMY_KEY;
-  const options = {
-    method: "POST",
-    url: `https://eth-mainnet.alchemyapi.io/v2/${key}`,
-    headers: { accept: "application/json", "content-type": "application/json" },
-    data: {
-      id: 1,
-      jsonrpc: "2.0",
-      method: "alchemy_getAssetTransfers",
-      params: [
-        {
-          fromBlock: "0x0",
-          toBlock: "latest",
-          category: ["external"],
-          withMetadata: false,
-          excludeZeroValue: true,
-          maxCount: "0x3e8",
-          fromAddress: "",
-        },
-      ],
-    },
-  };
+  try {
+    const config = {
+      apiKey: import.meta.env.VITE_ALCHEMY_KEY,
+      network: Network.ETH_MAINNET,
+    };
+    const alchemy = new Alchemy(config);
 
-  const transactions = await axios
-    .request(options)
-    .then(function (response) {
-      console.log(response.data);
-    })
-    .catch(function (error) {
-      console.error(error);
+    const transferData = await alchemy.core.getAssetTransfers({
+      fromBlock: "0x0",
+      fromAddress: fromAddress,
+      category: [AssetTransfersCategory.EXTERNAL],
+      maxCount: 15,
+      order: AssetTransfersOrder.DESCENDING,
     });
 
-  console.log(transactions, "transactions");
+    const transaction = await mapTransferResponse(
+      transferData.transfers,
+      alchemy
+    );
 
-  return undefined;
+    return transaction;
+  } catch (error) {
+    console.error("Error");
+  }
+
+  return [];
+};
+
+const mapTransferResponse = async (
+  transferResponse: AssetTransfersResult[],
+  alchemy: Alchemy
+): Promise<Transaction[]> => {
+  const transactionMapping = transferResponse.map(async (data) => {
+    const blockNum = await alchemy.core.getBlock(data.blockNum);
+
+    const convertedValue = new BigNumber(data.value || 0);
+    const dateTime = new Date(blockNum.timestamp * 1000);
+
+    return {
+      value: convertedValue.toFixed(5),
+      url: ETHEREUM_SCAN + data.hash,
+      dateTime: dateTime.toDateString(),
+    };
+  });
+
+  const transactions = await Promise.all(transactionMapping);
+
+  return transactions;
 };

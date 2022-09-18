@@ -1,34 +1,49 @@
-import { useCallback, useContext, useEffect, useReducer } from "react";
+import { useReducer } from "react";
 import { fetchTransactions } from "data/view";
 
 import { actions, initialState, reducer } from "reducers/view";
 import { CHAIN } from "constants/chains";
+import { Transaction } from "types";
 
-// const { setFetchedDataAction, updateLoadingStatusAction, setErrorAction } =
-//   actions;
+const {
+  setFetchedDataAction,
+  updateLoadingStatusAction,
+  updateAddressAction,
+  updateTotalAction,
+  // setErrorAction,
+} = actions;
 
 const useHandleAction = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        fetchTransactions(CHAIN.ETHEREUM);
+  const fetchData = async () => {
+    try {
+      const data = await fetchTransactions(CHAIN.ETHEREUM, state.fromAddress);
+      dispatch(updateLoadingStatusAction(false));
+      dispatch(setFetchedDataAction(data));
+    } catch (error) {
+      console.error("error");
+    }
+  };
 
-        // dispatch(
-        //   setFetchedDataAction(
+  const updateAddress = (address: string) => {
+    dispatch(updateAddressAction(address));
+  };
 
-        //   )
-        // );
-      } catch (error) {
-        console.error("error");
-      }
-    };
-    fetchData();
-  }, []);
+  const updateTotal = (transactions: Transaction[]) => {
+    if (transactions.length !== 0) {
+      const total = transactions.reduce((prev, current) => {
+        return Number(prev) + Number(current.value);
+      }, 0);
+      dispatch(updateTotalAction(total));
+    }
+  };
 
   return {
     ...state,
+    fetchData,
+    updateAddress,
+    updateTotal,
   };
 };
 export default useHandleAction;
