@@ -60,7 +60,7 @@ const mapTransferResponse = async (
     return {
       value: convertedValue.toFixed(5),
       url: ETHEREUM_SCAN + data.hash,
-      dateTime: dateTime.toDateString(),
+      dateTime: dateTime.toString(),
     };
   });
 
