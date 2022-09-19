@@ -1,6 +1,5 @@
 <p align="center" style="color: #343a40">
-  
-  <h1 align="center">Blockmill</h1>
+    <img width="300px" src="https://user-images.githubusercontent.com/71237103/190911590-62a3f52a-242b-4bb8-b6e1-25dcab97b09f.png"/>
 </p>
 
 ## Description

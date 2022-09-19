@@ -53,6 +53,9 @@ const View = () => {
             totalValue={totalValue}
           />
         </div>
+        <p className='ml-20 text-3xl text-pink'>
+          Total Spent Ether: {totalValue}
+        </p>
       </section>
     </div>
   );
