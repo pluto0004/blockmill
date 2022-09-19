@@ -11,27 +11,31 @@ import { LoadingSpinner } from "./Spinner";
 interface Props {
   transactions: Transaction[];
   isLoading: boolean;
+  totalValue: string;
 }
 
-export const Table = ({ transactions, isLoading }: Props) => {
+export const Table = ({ transactions, isLoading, totalValue }: Props) => {
   const columnHelper = createColumnHelper<Transaction>();
 
   const columns = [
     columnHelper.accessor("dateTime", {
-      cell: (info) => info.getValue(),
+      header: () => <p className='bg-gray-600 py-3 md:text-xl'>Date & Time</p>,
+      cell: (info) => <p className='text-sm md:text-base'>{info.getValue()}</p>,
       footer: (info) => info.column.id,
     }),
     columnHelper.accessor("value", {
-      header: () => "Value",
+      header: () => <p className='bg-gray-600 py-3 md:text-xl'>Value</p>,
       cell: (info) => info.renderValue(),
       footer: (info) => info.column.id,
     }),
     columnHelper.accessor("url", {
-      header: () => <p className='px-5'>Block Explore</p>,
+      header: () => (
+        <p className='bg-gray-600 py-3 md:px-5 md:text-xl'>Blockexplore</p>
+      ),
       cell: (info) => (
         <a
           target='_blank'
-          className='text-blue-400'
+          className='text-center text-sm text-blue-400 md:text-base'
           href={`${info.getValue()}`}
         >
           View More
@@ -55,19 +59,25 @@ export const Table = ({ transactions, isLoading }: Props) => {
 
   return (
     <>
-      {!isLoading && transactions.length === 0 ? (
-        <h1 className='text-center text-3xl font-bold text-sky'>No Data</h1>
-      ) : (
-        <div className='w-full'>
-          {isLoading ? (
+      <div className='w-full'>
+        {isLoading ? (
+          <div className='flex items-center justify-center'>
             <LoadingSpinner />
-          ) : (
-            <>
-              <p className='ml-20 mb-10 text-2xl'>
-                Currently only show the latest 15 transactions
-              </p>
-
-              <table className='ml-20 w-1/2 border-separate border-spacing-x-5 border-spacing-y-2 border border-slate-500'>
+          </div>
+        ) : transactions.length === 0 ? (
+          <p className='mb-10 text-center text-yellow md:text-2xl'>
+            No transaction data
+          </p>
+        ) : (
+          <>
+            <p className='mb-10 p-3 text-center text-2xl'>
+              Currently only show the latest 15 transactions
+            </p>
+            <p className='mb-5 text-center text-xl text-pink md:text-3xl'>
+              Total Spent Ether: {totalValue}
+            </p>
+            <div className='flex justify-center'>
+              <table className='border-separate border border-slate-500 md:border-spacing-y-2 md:border-spacing-x-5'>
                 <thead>
                   {table.getHeaderGroups().map((headerGroup) => (
                     <tr key={headerGroup.id}>
@@ -102,10 +112,10 @@ export const Table = ({ transactions, isLoading }: Props) => {
                   ))}
                 </tbody>
               </table>
-            </>
-          )}
-        </div>
-      )}
+            </div>
+          </>
+        )}
+      </div>
     </>
   );
 };

@@ -7,7 +7,7 @@ const Home = () => {
     <>
       <Header />
       <Navbar />
-      <section className='hidden justify-center md:mt-28 md:flex md:min-h-screen'>
+      <section className='hidden justify-center md:mt-28 md:flex'>
         <img
           src='images/top_cover.png'
           alt='Account Book For Blockchain'

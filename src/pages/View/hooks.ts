@@ -18,9 +18,11 @@ const useHandleAction = () => {
 
   const fetchData = async () => {
     try {
+      dispatch(updateLoadingStatusAction(true));
+
       const data = await fetchTransactions(CHAIN.ETHEREUM, state.fromAddress);
-      dispatch(updateLoadingStatusAction(false));
       dispatch(setFetchedDataAction(data));
+      dispatch(updateLoadingStatusAction(false));
     } catch (error) {
       console.error("error");
     }

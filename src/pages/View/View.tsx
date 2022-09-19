@@ -26,13 +26,13 @@ const View = () => {
       <Header />
       <Navbar />
       <section className='min-h-screen'>
-        <h1 className='mt-32 mb-52 text-center text-[70px]'>
+        <h1 className='mt-32 mb-10 text-center text-5xl md:mb-52 md:text-[70px]'>
           View Your Transactions
         </h1>
         <div className='flex flex-col items-center'>
           <input
             type='text'
-            className=' mb-28 h-20 w-80 overflow-hidden text-ellipsis border-b-2 border-transparent border-b-white bg-transparent px-4 text-2xl focus:border-white focus:ring-0 md:w-96'
+            className='mb-28 h-12 w-80 overflow-hidden text-ellipsis border-b-2 border-transparent border-b-white bg-transparent px-4 text-lg focus:border-white focus:ring-0 md:h-20 md:w-96 md:text-2xl'
             placeholder='Wallet Address'
             onChange={(e) => updateAddress(e.currentTarget.value)}
           />
@@ -47,11 +47,12 @@ const View = () => {
       </section>
       <section id='transaction' className='min-h-screen bg-gray-800'>
         <div className='flex items-center justify-center pt-44'>
-          <Table transactions={transactions} isLoading={isLoading} />
+          <Table
+            transactions={transactions}
+            isLoading={isLoading}
+            totalValue={totalValue}
+          />
         </div>
-        <p className='ml-20 text-3xl text-pink'>
-          Total Spent Ether: {totalValue}
-        </p>
       </section>
     </div>
   );
