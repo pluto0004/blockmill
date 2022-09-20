@@ -2,12 +2,7 @@ import { MenuButton } from "components/MenuButton";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useWindowSize } from "hooks/useWindowSize";
-import {
-  skyButton,
-  pinkButton,
-  yellowButton,
-  grassButton,
-} from "utils/buttons";
+import { skyButton, pinkButton, grassButton } from "utils/buttons";
 
 export const Navbar = () => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
