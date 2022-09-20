@@ -1,10 +1,32 @@
 import { Navbar } from "components/Navbar";
 import { Header } from "components/Header";
 import { Footer } from "components/Footer";
+import { Helmet } from "react-helmet";
+import { GA_ID } from "lib/gtag";
 
 const Home = () => {
   return (
     <>
+      {/* Google Analytics */}
+      {GA_ID && (
+        <Helmet>
+          <script
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+          />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                   window.dataLayer = window.dataLayer || [];
+                   function gtag(){dataLayer.push(arguments);}
+                   gtag('js', new Date());
+                   gtag('config', '${GA_ID}', {
+                     page_path: window.location.pathname,
+                   });`,
+            }}
+          />
+        </Helmet>
+      )}
       <Header />
       <Navbar />
       <section className='hidden justify-center md:mt-28 md:flex'>
