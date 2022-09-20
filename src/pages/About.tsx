@@ -8,7 +8,7 @@ const About = () => {
       <Header />
       <Navbar />
       <div className='flex min-h-screen flex-col items-center justify-center'>
-        <p className='mt-20 w-1/2 font-mono text-3xl'>
+        <p className='p-10 font-mono md:mt-20 md:w-1/2 md:text-3xl'>
           BlockMill is the account book for blockchain!
           <br />
           <br />

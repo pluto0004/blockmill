@@ -23,7 +23,7 @@ const updateAddressAction = (fromAddress: string) => {
 };
 
 const updateTotalAction = (totalValue: number) => {
-  return { type: UPDATE_TOTAL, totalValue: totalValue.toFixed(5) };
+  return { type: UPDATE_TOTAL, totalValue: totalValue.toFixed(10) };
 };
 
 const setErrorAction = (error?: Error) => {
