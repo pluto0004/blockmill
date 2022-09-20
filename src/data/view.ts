@@ -58,9 +58,9 @@ const mapTransferResponse = async (
     const dateTime = new Date(blockNum.timestamp * 1000);
 
     return {
-      value: convertedValue.toFixed(5),
+      value: convertedValue.toFixed(10),
       url: ETHEREUM_SCAN + data.hash,
-      dateTime: dateTime.toString(),
+      dateTime: dateTime.toDateString(),
     };
   });
 
