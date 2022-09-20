@@ -59,7 +59,7 @@ export const Table = ({ transactions, isLoading, totalValue }: Props) => {
 
   return (
     <>
-      <div className='w-full'>
+      <div className='mb-10 w-full'>
         {isLoading ? (
           <div className='flex items-center justify-center'>
             <LoadingSpinner />

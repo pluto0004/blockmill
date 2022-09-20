@@ -49,7 +49,7 @@ const View = () => {
         </div>
       </section>
       <section id='transaction' className='min-h-screen bg-gray-800'>
-        <div className='flex items-center justify-center pt-44'>
+        <div className=' flex items-center justify-center pt-44'>
           <Table
             transactions={transactions}
             isLoading={isLoading}
