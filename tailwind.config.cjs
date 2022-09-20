@@ -14,9 +14,6 @@ module.exports = {
       fontFamily: {
         default: ["Noto Sans"],
       },
-      backgroundImage: {
-        view: "url(images/view_background.png)",
-      },
       colors: {
         background: "#10032B",
         accent: "#CB2BF3",
