@@ -23,6 +23,7 @@ html {
 }
 
 #view {
+  background-image: url("../public/images/view_background.png");
   background-repeat: no-repeat;
   background-size: contain;
 }
