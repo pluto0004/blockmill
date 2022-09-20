@@ -2,12 +2,7 @@ import { MenuButton } from "components/MenuButton";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useWindowSize } from "hooks/useWindowSize";
-import {
-  skyButton,
-  pinkButton,
-  yellowButton,
-  grassButton,
-} from "utils/buttons";
+import { skyButton, pinkButton, grassButton } from "utils/buttons";
 
 export const Navbar = () => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
@@ -23,7 +18,7 @@ export const Navbar = () => {
           <MenuButton color={grassButton} text='HOME' path='/' />
           <MenuButton color={skyButton} text='ABOUT' path='/about' />
           <MenuButton color={pinkButton} text='VIEW' path='/view' />
-          <MenuButton color={yellowButton} text='DONATE' path='/donate' />
+          {/* <MenuButton color={yellowButton} text='DONATE' path='/donate' /> */}
         </div>
         <div className='flex justify-end'>
           <img
@@ -59,14 +54,14 @@ export const Navbar = () => {
                     View
                   </Link>
                 </li>
-                <li className='my-3 cursor-pointer'>
+                {/* <li className='my-3 cursor-pointer'>
                   <Link
                     to='/donate'
                     className='px-4 text-xl text-yellow hover:text-yellow-active'
                   >
                     Donate
                   </Link>
-                </li>
+                </li> */}
               </ul>
             </div>
           )}
