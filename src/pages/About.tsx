@@ -12,8 +12,7 @@ const About = () => {
           BlockMill is the account book for blockchain!
           <br />
           <br />
-          You can check the total spend on crypto currencies you have used
-          easily by inputting your wallet address. <br />
+          You can easily check the total spend on crypto currencies you have used by entering your wallet address. <br />
           <br />
           Currently, BlockMill only supports external transactions for Ether and
           only shows the latest 15 transactions. However, more features will
