@@ -1,22 +1,10 @@
 import { Navbar } from "components/Navbar";
 import { Header } from "components/Header";
 import { Footer } from "components/Footer";
-import { Helmet } from "react-helmet";
 
 const Home = () => {
   return (
     <>
-      <Helmet>
-        <title>ページのタイトル</title>
-        <meta name='og:description' content='account book for blockchain' />
-        <meta property='og:image' content='/public/images/eye.png' />
-        <meta property='og:url' content='https://blockmill.vercel.app/' />
-        <meta
-          name='viewport'
-          content='width=device-width,initial-scale=1.0,minimum-scale=1.0'
-        ></meta>
-      </Helmet>
-
       <Header />
       <Navbar />
       <section className='hidden justify-center md:mt-28 md:flex'>
