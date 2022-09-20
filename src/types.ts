@@ -8,4 +8,5 @@ export interface Transaction {
   dateTime: string;
   value: string;
   url: string;
+  isSucceeded: boolean;
 }
