@@ -22,7 +22,7 @@ const View = () => {
   }, [transactions]);
 
   return (
-    <div id='view'>
+    <div id='view' className="bg-[url('images/view_background.png')]">
       <Header />
       <Navbar />
       <section className='min-h-screen'>
