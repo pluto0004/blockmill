@@ -5,7 +5,7 @@ import {
   Alchemy,
   AssetTransfersCategory,
   AssetTransfersOrder,
-  AssetTransfersResult,
+  AssetTransfersWithMetadataResult,
   Network,
 } from "alchemy-sdk";
 import { ETHEREUM_SCAN } from "constants/blockexplore";
@@ -32,6 +32,7 @@ export const fetchTransactions = async (
       category: [AssetTransfersCategory.EXTERNAL],
       maxCount: 15,
       order: AssetTransfersOrder.DESCENDING,
+      withMetadata: true,
     });
 
     const transaction = await mapTransferResponse(
@@ -48,19 +49,18 @@ export const fetchTransactions = async (
 };
 
 const mapTransferResponse = async (
-  transferResponse: AssetTransfersResult[],
+  transferResponse: AssetTransfersWithMetadataResult[],
   alchemy: Alchemy
 ): Promise<Transaction[]> => {
   const transactionMapping = transferResponse.map(async (data) => {
-    const blockNum = await alchemy.core.getBlock(data.blockNum);
-
+    const receipt = await alchemy.core.getTransactionReceipt(data.hash);
     const convertedValue = new BigNumber(data.value || 0);
-    const dateTime = new Date(blockNum.timestamp * 1000);
 
     return {
       value: convertedValue.toFixed(10),
       url: ETHEREUM_SCAN + data.hash,
-      dateTime: dateTime.toDateString(),
+      dateTime: data.metadata.blockTimestamp,
+      isSucceeded: receipt?.status === 1 ? true : false,
     };
   });
 

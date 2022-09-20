@@ -28,6 +28,19 @@ export const Table = ({ transactions, isLoading, totalValue }: Props) => {
       cell: (info) => info.renderValue(),
       footer: (info) => info.column.id,
     }),
+    columnHelper.accessor("isSucceeded", {
+      header: () => <p className='bg-gray-600 px-3 py-3 md:text-xl'>Status</p>,
+      cell: (info) => (
+        <p className='text-center text-sm  md:text-base'>
+          {info.getValue() ? (
+            <span>Succes</span>
+          ) : (
+            <span className='text-red-500'>Fail</span>
+          )}
+        </p>
+      ),
+      footer: (info) => info.column.id,
+    }),
     columnHelper.accessor("url", {
       header: () => (
         <p className='bg-gray-600 py-3 md:px-5 md:text-xl'>Blockexplore</p>
@@ -75,7 +88,12 @@ export const Table = ({ transactions, isLoading, totalValue }: Props) => {
             </p>
             <p className='mb-5 text-center text-xl text-pink md:text-3xl'>
               Total Spent Ether: {totalValue}
+              <br />
+              <span className='text-base text-white'>
+                * Failed Transactions are excluded from the total
+              </span>
             </p>
+
             <div className='flex justify-center'>
               <table className='border-separate border border-slate-500 md:border-spacing-y-2 md:border-spacing-x-5'>
                 <thead>

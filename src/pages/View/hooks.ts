@@ -34,7 +34,10 @@ const useHandleAction = () => {
 
   const updateTotal = (transactions: Transaction[]) => {
     if (transactions.length !== 0) {
-      const total = transactions.reduce((prev, current) => {
+      const filteredTransactions = transactions.filter(
+        (data) => data.isSucceeded === true
+      );
+      const total = filteredTransactions.reduce((prev, current) => {
         return Number(prev) + Number(current.value);
       }, 0);
       dispatch(updateTotalAction(total));
