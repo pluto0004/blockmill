@@ -30,6 +30,9 @@ const View = () => {
           View Your Transactions
         </h1>
         <div className='flex flex-col items-center'>
+          <p className='mb-5 text-grass'>
+            Please enter your ethereum wallet address
+          </p>
           <input
             type='text'
             className='mb-28 h-12 w-80 overflow-hidden text-ellipsis border-b-2 border-transparent border-b-white bg-transparent px-4 text-lg focus:border-white focus:ring-0 md:h-20 md:w-96 md:text-2xl'
