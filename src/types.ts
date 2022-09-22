@@ -10,3 +10,15 @@ export interface Transaction {
   url: string;
   isSucceeded: boolean;
 }
+
+export interface DataFetchResponse {
+  transactions: Transaction[];
+  total: number;
+  fiatTotal: number;
+}
+
+export interface PriceResponse {
+  [id: string]: {
+    [currency: string]: number;
+  };
+}

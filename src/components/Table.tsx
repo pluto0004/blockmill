@@ -5,33 +5,48 @@ import {
   createColumnHelper,
   flexRender,
 } from "@tanstack/react-table";
-import { Transaction } from "types";
+import { PriceResponse, Transaction } from "types";
 import { LoadingSpinner } from "./Spinner";
 
 interface Props {
   transactions: Transaction[];
   isLoading: boolean;
   totalValue: string;
+  fiatTotal: number;
+  fiatPrice: PriceResponse;
 }
 
-export const Table = ({ transactions, isLoading, totalValue }: Props) => {
+export const Table = ({
+  transactions,
+  isLoading,
+  totalValue,
+  fiatTotal,
+  fiatPrice,
+}: Props) => {
   const columnHelper = createColumnHelper<Transaction>();
+
+  // TODO: This variable is temporary
+  const currency = "$";
 
   const columns = [
     columnHelper.accessor("dateTime", {
-      header: () => <p className='bg-gray-600 py-3 md:text-xl'>Date & Time</p>,
+      header: () => <p className='bg-gray-600 py-3 text-sm md:text-xl'>Date</p>,
       cell: (info) => <p className='text-sm md:text-base'>{info.getValue()}</p>,
       footer: (info) => info.column.id,
     }),
     columnHelper.accessor("value", {
-      header: () => <p className='bg-gray-600 py-3 md:text-xl'>Value</p>,
+      header: () => (
+        <p className='bg-gray-600 py-3 text-sm md:text-xl'>Value</p>
+      ),
       cell: (info) => info.renderValue(),
       footer: (info) => info.column.id,
     }),
     columnHelper.accessor("isSucceeded", {
-      header: () => <p className='bg-gray-600 px-3 py-3 md:text-xl'>Status</p>,
+      header: () => (
+        <p className='bg-gray-600 py-3 text-sm md:px-3 md:text-xl'>Status</p>
+      ),
       cell: (info) => (
-        <p className='text-center text-sm  md:text-base'>
+        <p className='text-center text-sm md:text-base'>
           {info.getValue() ? (
             <span>Succes</span>
           ) : (
@@ -43,7 +58,7 @@ export const Table = ({ transactions, isLoading, totalValue }: Props) => {
     }),
     columnHelper.accessor("url", {
       header: () => (
-        <p className='bg-gray-600 py-3 md:px-5 md:text-xl'>Blockexplore</p>
+        <p className='bg-gray-600 py-3 text-sm md:px-5 md:text-xl'>Details</p>
       ),
       cell: (info) => (
         <a
@@ -87,14 +102,20 @@ export const Table = ({ transactions, isLoading, totalValue }: Props) => {
               Currently only show the latest 15 transactions
             </p>
             <p className='mb-5 text-center text-xl text-pink md:text-3xl'>
-              Total Spent Ether: {totalValue}
+              <span className='text-gray-400'>Total Spent Ether: </span>
+              {totalValue} ({currency} {fiatTotal.toFixed(2)}
+              )
               <br />
-              <span className='text-base text-white'>
+              <span className='text-sm text-white md:text-base'>
+                *1 Ether = ${fiatPrice["ethereum"]["usd"]}
+              </span>
+              <br />
+              <span className='text-sm text-white md:text-base'>
                 * Failed Transactions are excluded from the total
               </span>
             </p>
 
-            <div className='flex justify-center'>
+            <div className='flex w-full justify-center'>
               <table className='border-separate border border-slate-500 md:border-spacing-y-2 md:border-spacing-x-5'>
                 <thead>
                   {table.getHeaderGroups().map((headerGroup) => (

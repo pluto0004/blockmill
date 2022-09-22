@@ -1,17 +1,22 @@
 import { CHAIN } from "constants/chains";
-import { Transaction } from "types";
+import { Transaction, PriceResponse, DataFetchResponse } from "types";
 
 const SET_FETCHED_DATA = "SET_FETCHED_DATA" as const;
-const UPDATE_TOTAL = "UPDATE_TOTAL" as const;
+const SET_FIAT_PRICE = "SET_FIAT_PRICE" as const;
+const UPDATE_FIAT_TOTAL = "UPDATE_FIAT_TOTAL" as const;
 const UPDATE_LOADING_STATUS = "UPDATE_LOADING_STATUS" as const;
 const UPDATE_ADDRESS = "UPDATE_ADDRESS" as const;
 const SET_ERROR = "SET_ERROR" as const;
 
-const setFetchedDataAction = (transactions: Transaction[]) => {
+const setFetchedDataAction = (data: DataFetchResponse) => {
   return {
     type: SET_FETCHED_DATA,
-    transactions: transactions,
+    data: data,
   };
+};
+
+const setFiatPriceAction = (fiatPrice: PriceResponse) => {
+  return { type: SET_FIAT_PRICE, fiatPrice: fiatPrice };
 };
 
 const updateLoadingStatusAction = (isLoading: boolean) => {
@@ -22,8 +27,8 @@ const updateAddressAction = (fromAddress: string) => {
   return { type: UPDATE_ADDRESS, fromAddress: fromAddress };
 };
 
-const updateTotalAction = (totalValue: number) => {
-  return { type: UPDATE_TOTAL, totalValue: totalValue.toFixed(10) };
+const updateFiatTotalAction = (fiatTotal: number) => {
+  return { type: UPDATE_FIAT_TOTAL, fiatTotal: fiatTotal };
 };
 
 const setErrorAction = (error?: Error) => {
@@ -32,10 +37,11 @@ const setErrorAction = (error?: Error) => {
 
 export const actions = {
   setFetchedDataAction,
+  setFiatPriceAction,
   updateLoadingStatusAction,
   setErrorAction,
   updateAddressAction,
-  updateTotalAction,
+  updateFiatTotalAction,
 };
 
 export type ActionType =
@@ -43,7 +49,8 @@ export type ActionType =
   | ReturnType<typeof setErrorAction>
   | ReturnType<typeof updateLoadingStatusAction>
   | ReturnType<typeof updateAddressAction>
-  | ReturnType<typeof updateTotalAction>;
+  | ReturnType<typeof updateFiatTotalAction>
+  | ReturnType<typeof setFiatPriceAction>;
 
 export type State = {
   fromAddress: string;
@@ -52,6 +59,8 @@ export type State = {
   isLoading: boolean;
   error?: Error;
   totalValue: string;
+  fiatPrice: PriceResponse;
+  fiatTotal: number;
 };
 
 export const initialState: State = {
@@ -61,6 +70,8 @@ export const initialState: State = {
   isLoading: false,
   error: undefined,
   totalValue: "0",
+  fiatPrice: {},
+  fiatTotal: 0,
 };
 
 export const reducer = (state: State, action: ActionType): State => {
@@ -68,17 +79,24 @@ export const reducer = (state: State, action: ActionType): State => {
     case SET_FETCHED_DATA:
       return {
         ...state,
-        transactions: action.transactions,
+        transactions: action.data.transactions,
+        totalValue: action.data.total.toFixed(5),
+        fiatTotal: action.data.fiatTotal,
+      };
+    case SET_FIAT_PRICE:
+      return {
+        ...state,
+        fiatPrice: action.fiatPrice,
+      };
+    case UPDATE_FIAT_TOTAL:
+      return {
+        ...state,
+        fiatTotal: action.fiatTotal,
       };
     case UPDATE_ADDRESS:
       return {
         ...state,
         fromAddress: action.fromAddress,
-      };
-    case UPDATE_TOTAL:
-      return {
-        ...state,
-        totalValue: action.totalValue,
       };
     case UPDATE_LOADING_STATUS:
       return {

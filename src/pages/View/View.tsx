@@ -12,14 +12,16 @@ const View = () => {
     isLoading,
     transactions,
     totalValue,
+    fiatTotal,
+    fiatPrice,
     fetchData,
+    fetchPrice,
     updateAddress,
-    updateTotal,
   } = useHandleAction();
 
   useEffect(() => {
-    updateTotal(transactions);
-  }, [transactions]);
+    fetchPrice();
+  }, []);
 
   return (
     <div id='view'>
@@ -49,11 +51,13 @@ const View = () => {
         </div>
       </section>
       <section id='transaction' className='min-h-screen bg-gray-800'>
-        <div className=' flex items-center justify-center pt-44'>
+        <div className=' flex items-center justify-center pt-20'>
           <Table
+            fiatPrice={fiatPrice}
             transactions={transactions}
             isLoading={isLoading}
             totalValue={totalValue}
+            fiatTotal={fiatTotal}
           />
         </div>
       </section>
