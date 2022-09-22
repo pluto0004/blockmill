@@ -12,15 +12,14 @@ const About = () => {
           BlockMill is the account book for blockchain!
           <br />
           <br />
-          You can easily check the total spend on crypto currencies you have used by entering your wallet address. <br />
+          You can easily check the total spend on crypto currencies you have
+          used by entering your wallet address. <br />
           <br />
           Currently, BlockMill only supports external transactions for Ether and
           only shows the latest 15 transactions. However, more features will
           come soon! Here are some upcoming features!
           <ul className='mt-5 ml-10 list-disc'>
-            <li className='mb-3'>
-              Show fiat currencies (supporting $ and Japanese yen first)
-            </li>
+            <li className='mb-3'>Show fiat currencies (supporting $ first)</li>
             <li className='mb-3'>
               Support more transactions to display & pagination
             </li>

@@ -1,6 +1,8 @@
 import { CHAIN } from "constants/chains";
 import { BaseError } from "errors/errors";
 import { Transaction } from "types";
+import { DateTime } from "luxon";
+
 import {
   Alchemy,
   AssetTransfersCategory,
@@ -55,11 +57,12 @@ const mapTransferResponse = async (
   const transactionMapping = transferResponse.map(async (data) => {
     const receipt = await alchemy.core.getTransactionReceipt(data.hash);
     const convertedValue = new BigNumber(data.value || 0);
+    const dt = DateTime.fromISO(data.metadata.blockTimestamp);
 
     return {
-      value: convertedValue.toFixed(10),
+      value: convertedValue.toFixed(5),
       url: ETHEREUM_SCAN + data.hash,
-      dateTime: data.metadata.blockTimestamp,
+      dateTime: dt.toFormat("yyyy-MM-dd HH:mm:ss z"),
       isSucceeded: receipt?.status === 1 ? true : false,
     };
   });
