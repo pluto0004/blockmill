@@ -4,6 +4,7 @@ import {
   getCoreRowModel,
   createColumnHelper,
   flexRender,
+  getPaginationRowModel,
 } from "@tanstack/react-table";
 import { PriceResponse, Transaction } from "types";
 import { LoadingSpinner } from "./Spinner";
@@ -30,20 +31,20 @@ export const Table = ({
 
   const columns = [
     columnHelper.accessor("dateTime", {
-      header: () => <p className='bg-gray-600 py-3 text-sm md:text-xl'>Date</p>,
+      header: () => <p className='bg-gray-600 py-6 text-sm md:text-xl'>Date</p>,
       cell: (info) => <p className='text-sm md:text-base'>{info.getValue()}</p>,
       footer: (info) => info.column.id,
     }),
     columnHelper.accessor("value", {
       header: () => (
-        <p className='bg-gray-600 py-3 text-sm md:text-xl'>Value</p>
+        <p className='bg-gray-600 py-6 text-sm md:text-xl'>Value</p>
       ),
       cell: (info) => info.renderValue(),
       footer: (info) => info.column.id,
     }),
     columnHelper.accessor("isSucceeded", {
       header: () => (
-        <p className='bg-gray-600 py-3 text-sm md:px-3 md:text-xl'>Status</p>
+        <p className='bg-gray-600 py-6 text-sm md:px-3 md:text-xl'>Status</p>
       ),
       cell: (info) => (
         <p className='text-center text-sm md:text-base'>
@@ -58,7 +59,7 @@ export const Table = ({
     }),
     columnHelper.accessor("url", {
       header: () => (
-        <p className='bg-gray-600 py-3 text-sm md:px-5 md:text-xl'>Details</p>
+        <p className='bg-gray-600 py-6 text-sm md:px-5 md:text-xl'>Details</p>
       ),
       cell: (info) => (
         <a
@@ -83,6 +84,7 @@ export const Table = ({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
   });
 
   return (
@@ -99,7 +101,7 @@ export const Table = ({
         ) : (
           <>
             <p className='mb-10 p-3 text-center text-2xl'>
-              Currently only show the latest 15 transactions
+              Show the latest transactions (Up to 100 transactions)
             </p>
             <p className='mb-5 text-center text-xl text-pink md:text-3xl'>
               <span className='text-gray-400'>Total Spent Ether: </span>
@@ -115,7 +117,7 @@ export const Table = ({
               </span>
             </p>
 
-            <div className='flex w-full justify-center'>
+            <div className='m-auto flex w-2/3 flex-col'>
               <table className='border-separate border border-slate-500 md:border-spacing-y-2 md:border-spacing-x-5'>
                 <thead>
                   {table.getHeaderGroups().map((headerGroup) => (
@@ -151,6 +153,43 @@ export const Table = ({
                   ))}
                 </tbody>
               </table>
+            </div>
+            <div className='m-auto mt-5 flex w-2/3 items-center'>
+              <button
+                className='mx-5 rounded border p-1'
+                onClick={() => table.setPageIndex(0)}
+                disabled={!table.getCanPreviousPage()}
+              >
+                {"<<"}
+              </button>
+              <button
+                className='rounded border p-1'
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+              >
+                {"<"}
+              </button>
+              <button
+                className='mx-5 rounded border p-1'
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+              >
+                {">"}
+              </button>
+              <button
+                className='rounded border p-1'
+                onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+                disabled={!table.getCanNextPage()}
+              >
+                {">>"}
+              </button>
+              <span className='ml-5 flex items-center'>
+                <div>Page</div>
+                <strong>
+                  {table.getState().pagination.pageIndex + 1} of{" "}
+                  {table.getPageCount()}
+                </strong>
+              </span>
             </div>
           </>
         )}
