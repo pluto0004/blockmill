@@ -112,7 +112,11 @@ export const Table = ({
                 *1 Ether = ${fiatPrice["ethereum"]["usd"]}
               </span>{" "}
               <span className='text-sm text-gray-400 md:text-base'>
-                (Powered by <a href='https://www.coingecko.com/'>CoinGecko</a>)
+                (Powered by{" "}
+                <a href='https://www.coingecko.com/' target='_blank'>
+                  CoinGecko
+                </a>
+                )
               </span>
               <br />
               <span className='text-sm text-white md:text-base'>
