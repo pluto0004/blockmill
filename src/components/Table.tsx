@@ -102,12 +102,15 @@ export const Table = ({
               Currently only show the latest 15 transactions
             </p>
             <p className='mb-5 text-center text-xl text-pink md:text-3xl'>
-              <span className='text-gray-400'>Total Spent Ether: </span>
+              <span className='text-white'>Total Spent Ether: </span>
               {totalValue} ({currency} {fiatTotal.toFixed(2)}
               )
               <br />
               <span className='text-sm text-white md:text-base'>
                 *1 Ether = ${fiatPrice["ethereum"]["usd"]}
+              </span>{" "}
+              <span className='text-sm text-gray-400 md:text-base'>
+                (Powered by <a href='https://www.coingecko.com/'>CoinGecko</a>)
               </span>
               <br />
               <span className='text-sm text-white md:text-base'>

@@ -19,10 +19,6 @@ const About = () => {
           only shows the latest 15 transactions. However, more features will
           come soon! Here are some upcoming features!
           <ul className='mt-5 ml-10 list-disc'>
-            <li className='mb-3'>Show fiat currencies (supporting $ first)</li>
-            <li className='mb-3'>
-              Support more transactions to display & pagination
-            </li>
             <li className='mb-3'>Support showing ERC20 tokens on Ethereum</li>
             <li className='mb-3'>Support Polygon</li>
             <li className='mb-3'>
