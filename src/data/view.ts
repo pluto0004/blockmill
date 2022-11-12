@@ -10,7 +10,7 @@ import {
   AssetTransfersWithMetadataResult,
   Network,
 } from "alchemy-sdk";
-import { ETHEREUM_SCAN } from "constants/blockexplore";
+import { ETHEREUM_SCAN, POLYGON_SCAN } from "constants/blockexplore";
 import BigNumber from "bignumber.js";
 
 export const fetchTransactions = async (
@@ -39,7 +39,8 @@ export const fetchTransactions = async (
 
     const transaction = await mapTransferResponse(
       transferData.transfers,
-      alchemy
+      alchemy,
+      chain
     );
 
     return transaction;
@@ -52,7 +53,8 @@ export const fetchTransactions = async (
 
 const mapTransferResponse = async (
   transferResponse: AssetTransfersWithMetadataResult[],
-  alchemy: Alchemy
+  alchemy: Alchemy,
+  chain: string
 ): Promise<Transaction[]> => {
   const transactionMapping = transferResponse.map(async (data) => {
     const receipt = await alchemy.core.getTransactionReceipt(data.hash);
@@ -61,7 +63,10 @@ const mapTransferResponse = async (
 
     return {
       value: convertedValue.toFixed(5),
-      url: ETHEREUM_SCAN + data.hash,
+      url:
+        chain === "Ethereum"
+          ? ETHEREUM_SCAN + data.hash
+          : POLYGON_SCAN + data.hash,
       dateTime: dt.toFormat("yyyy-MM-dd HH:mm:ss"),
       isSucceeded: receipt?.status === 1 ? true : false,
     };
