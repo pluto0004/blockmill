@@ -1,4 +1,3 @@
-import { CHAIN } from "constants/chains";
 import { BaseError } from "errors/errors";
 import { Transaction } from "types";
 import { DateTime } from "luxon";
@@ -12,9 +11,10 @@ import {
 } from "alchemy-sdk";
 import { ETHEREUM_SCAN } from "constants/blockexplore";
 import BigNumber from "bignumber.js";
+import NETWORKS from "constants/networks";
 
 export const fetchTransactions = async (
-  chain: CHAIN,
+  chain: string,
   fromAddress: string
 ): Promise<Transaction[] | []> => {
   if (!chain) {
@@ -23,8 +23,11 @@ export const fetchTransactions = async (
 
   try {
     const config = {
-      apiKey: import.meta.env.VITE_ALCHEMY_KEY,
-      network: Network.ETH_MAINNET,
+      apiKey:
+        chain === "Ethereum"
+          ? import.meta.env.VITE_ALCHEMY_KEY_ETHEREUM
+          : import.meta.env.VITE_ALCHEMY_KEY_POLYGON,
+      network: NETWORKS[chain] as Network,
     };
     const alchemy = new Alchemy(config);
 

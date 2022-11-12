@@ -1,4 +1,3 @@
-import { CHAIN } from "constants/chains";
 import { Transaction, PriceResponse, DataFetchResponse } from "types";
 
 const SET_FETCHED_DATA = "SET_FETCHED_DATA" as const;
@@ -6,6 +5,7 @@ const SET_FIAT_PRICE = "SET_FIAT_PRICE" as const;
 const UPDATE_FIAT_TOTAL = "UPDATE_FIAT_TOTAL" as const;
 const UPDATE_LOADING_STATUS = "UPDATE_LOADING_STATUS" as const;
 const UPDATE_ADDRESS = "UPDATE_ADDRESS" as const;
+const UPDATE_CHAIN = "UPDATE_CHAIN" as const;
 const SET_ERROR = "SET_ERROR" as const;
 
 const setFetchedDataAction = (data: DataFetchResponse) => {
@@ -31,6 +31,10 @@ const updateFiatTotalAction = (fiatTotal: number) => {
   return { type: UPDATE_FIAT_TOTAL, fiatTotal: fiatTotal };
 };
 
+const updateChainAction = (chain: string) => {
+  return { type: UPDATE_CHAIN, chain: chain };
+};
+
 const setErrorAction = (error?: Error) => {
   return { type: SET_ERROR, error: error };
 };
@@ -42,6 +46,7 @@ export const actions = {
   setErrorAction,
   updateAddressAction,
   updateFiatTotalAction,
+  updateChainAction,
 };
 
 export type ActionType =
@@ -50,12 +55,13 @@ export type ActionType =
   | ReturnType<typeof updateLoadingStatusAction>
   | ReturnType<typeof updateAddressAction>
   | ReturnType<typeof updateFiatTotalAction>
-  | ReturnType<typeof setFiatPriceAction>;
+  | ReturnType<typeof setFiatPriceAction>
+  | ReturnType<typeof updateChainAction>;
 
 export type State = {
   fromAddress: string;
   transactions: Transaction[];
-  chain: CHAIN;
+  chain: string;
   isLoading: boolean;
   error?: Error;
   totalValue: string;
@@ -66,7 +72,7 @@ export type State = {
 export const initialState: State = {
   fromAddress: "",
   transactions: [],
-  chain: CHAIN.ETHEREUM,
+  chain: "Ethereum",
   isLoading: false,
   error: undefined,
   totalValue: "0",
@@ -97,6 +103,11 @@ export const reducer = (state: State, action: ActionType): State => {
       return {
         ...state,
         fromAddress: action.fromAddress,
+      };
+    case UPDATE_CHAIN:
+      return {
+        ...state,
+        chain: action.chain,
       };
     case UPDATE_LOADING_STATUS:
       return {
