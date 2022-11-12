@@ -4,11 +4,9 @@
 
 ## Description
 
-TBU
+BlockMill is the account book for blockchain!
 
-## Demo
-
-## Usage
+You can easily check the total spend on crypto currencies you have used by entering your wallet address.
 
 ## Install
 
@@ -29,4 +27,4 @@ $ npm run dev
 TBU
 
 ## Author
-Creators Studio
+Miho Ogura
