@@ -3,13 +3,13 @@ import { fetchTransactions } from "data/view";
 import { fetchFiatPrice } from "data/fiatPrice";
 
 import { actions, initialState, reducer } from "reducers/view";
-import { CHAIN } from "constants/chains";
 import { Transaction } from "types";
 
 const {
   setFetchedDataAction,
   updateLoadingStatusAction,
   updateAddressAction,
+  updateChainAction,
   setFiatPriceAction,
   // setErrorAction,
 } = actions;
@@ -22,7 +22,7 @@ const useHandleAction = () => {
       dispatch(updateLoadingStatusAction(true));
 
       const transactions = await fetchTransactions(
-        CHAIN.ETHEREUM,
+        state.chain,
         state.fromAddress
       );
       const total = updateTotal(transactions);
@@ -56,6 +56,10 @@ const useHandleAction = () => {
     dispatch(updateAddressAction(address));
   };
 
+  const updateChain = (chain: string) => {
+    dispatch(updateChainAction(chain));
+  };
+
   const updateTotal = (transactions: Transaction[]): number => {
     if (transactions.length !== 0) {
       const filteredTransactions = transactions.filter(
@@ -85,6 +89,7 @@ const useHandleAction = () => {
     fetchData,
     updateAddress,
     fetchPrice,
+    updateChain,
   };
 };
 export default useHandleAction;
